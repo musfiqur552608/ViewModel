@@ -1,6 +1,8 @@
 package org.freedu.viewmodeldemo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -12,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView countTxt;
     private Button countBtn;
+
+
     private MainActivityViewActivity mainActivityViewActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +26,18 @@ public class MainActivity extends AppCompatActivity {
         countBtn = findViewById(R.id.countBtn);
         mainActivityViewActivity = new ViewModelProvider(this).get(MainActivityViewActivity.class);
 
-        countTxt.setText(mainActivityViewActivity.getInitialCounter()+"");
+        LiveData<Integer> count = mainActivityViewActivity.getInitialCounter();
+        count.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                countTxt.setText(integer+"");
+            }
+        });
 
         countBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                countTxt.setText(mainActivityViewActivity.getCounter()+"");
+                mainActivityViewActivity.getCounter();
             }
         });
     }

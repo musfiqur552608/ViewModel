@@ -1,15 +1,18 @@
 package org.freedu.viewmodeldemo;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class MainActivityViewActivity extends ViewModel {
+    private MutableLiveData<Integer> counterLiveData = new MutableLiveData<>();
     private int counter = 0;
 
-    public int getInitialCounter(){
-        return counter;
+    public MutableLiveData<Integer> getInitialCounter(){
+        counterLiveData.setValue(counter);
+        return counterLiveData;
     }
-    public int getCounter(){
+    public void getCounter(){
         counter++;
-        return counter;
+        counterLiveData.setValue(counter);
     }
 }
